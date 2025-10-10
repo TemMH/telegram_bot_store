@@ -8,12 +8,12 @@ class Vin extends Model
 {
     protected $table = 'vin_dataset';
     protected $fillable = [
-        'MAKE',
-        'WMI',
+        'make',
+        'wmi',
         'model',
-        'VDS',
+        'vds',
         'year',
-        'VIS',
+        'vis',
     ];
 
 

@@ -14,7 +14,7 @@ class ReplyKeyboardBuilder
         return ReplyKeyboard::make()
             ->buttons([
                 ReplyButton::make('Поиск по названию'),
-                ReplyButton::make('Поиск по VIN'),
+                ReplyButton::make('Поиск по оригинальному коду'),
                 ReplyButton::make('Мои заказы'),
                 ReplyButton::make('Поддержка/Отзывы'),
 
@@ -24,7 +24,12 @@ class ReplyKeyboardBuilder
 
     public function searchByNameKeyboard(): ReplyKeyboard
     {
-            return ReplyKeyboard::make()->inputPlaceholder("Например:Масло Toyota...")->button("Отмена");
+            return ReplyKeyboard::make()->inputPlaceholder("Например:Camry")->button("Отмена");
+    }
+
+    public function searchByCodeKeyboard(): ReplyKeyboard
+    {
+        return ReplyKeyboard::make()->inputPlaceholder("Например:4806860040")->button("Отмена");
     }
 
     public function searchByVinKeyboard(): ReplyKeyboard

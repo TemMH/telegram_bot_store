@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handlers\Actions;
 
+use App\Handlers\Commands\StartCommand;
 use App\Keyboards\ReplyKeyboardBuilder;
 use App\Models\Vin;
 use App\Services\StateService;
@@ -35,7 +38,7 @@ class SearchByVinAction
         $wds = substr($vin, 3, 6);
 
         $match = Vin::query()
-            ->where('WMI', $wmi)
+            ->where('wmi', $wmi)
             ->where('vds', $wds)
             ->first();
 
@@ -43,8 +46,8 @@ class SearchByVinAction
         if ($match) {
             $chat->markdown(
                 "Найдено: \n" .
-                "Марка: {$match->MAKE}" .
-                "Модель: {$match->model}" .
+                "Марка: {$match->make} \n" .
+                "Модель: {$match->model} \n" .
                 "Год: {$match->year}"
             )->send();
         } else {
@@ -52,5 +55,6 @@ class SearchByVinAction
         }
 
         app(StateService::class)->clear($chat);
+        app(StartCommand::class)->execute($chat);
     }
 }
