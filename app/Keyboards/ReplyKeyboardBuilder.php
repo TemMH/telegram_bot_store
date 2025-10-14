@@ -24,7 +24,7 @@ class ReplyKeyboardBuilder
 
     public function searchByNameKeyboard(): ReplyKeyboard
     {
-            return ReplyKeyboard::make()->inputPlaceholder("Например:Camry")->button("Отмена");
+            return ReplyKeyboard::make()->inputPlaceholder("Например:BMW сайлентблок")->button("Отмена");
     }
 
     public function searchByCodeKeyboard(): ReplyKeyboard

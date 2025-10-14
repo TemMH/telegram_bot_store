@@ -3,9 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Part extends Model
 {
+    protected $primaryKey = 'part_code';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    use Searchable;
+
     protected $table = 'parts';
     protected $fillable = [
         'part_code',
@@ -19,4 +26,14 @@ class Part extends Model
         'country',
         'quantity'
     ];
+
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'part_code' => $this->part_code,
+            'name' => $this->name,
+            'applicability' => $this->applicability,
+        ];
+    }
 }
