@@ -15,7 +15,7 @@ class ReplyKeyboardBuilder
             ->buttons([
                 ReplyButton::make('Поиск по названию'),
                 ReplyButton::make('Поиск по оригинальному коду'),
-                ReplyButton::make('Мои заказы'),
+//                ReplyButton::make('Мои заказы'),
                 ReplyButton::make('Поддержка/Отзывы'),
 
             ])->chunk(2);
@@ -32,9 +32,9 @@ class ReplyKeyboardBuilder
         return ReplyKeyboard::make()->inputPlaceholder("Например:4806860040")->button("Отмена");
     }
 
-    public function searchByVinKeyboard(): ReplyKeyboard
-    {
-            return ReplyKeyboard::make()->inputPlaceholder("Например:WVGZZZ00000000000...")->button("Отмена");
-    }
+//    public function searchByVinKeyboard(): ReplyKeyboard
+//    {
+//            return ReplyKeyboard::make()->inputPlaceholder("Например:WVGZZZ00000000000...")->button("Отмена");
+//    }
 
 }

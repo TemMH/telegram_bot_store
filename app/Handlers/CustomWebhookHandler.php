@@ -5,10 +5,13 @@ namespace App\Handlers;
 use App\Handlers\Actions\ChoosePartAction;
 use App\Handlers\Actions\OrderAction;
 use App\Handlers\Actions\SearchByOriginalCodeAction;
-use App\Handlers\Commands\ChooseCommand;
 use App\Handlers\Commands\StartCommand;
+use App\Models\Part;
 use App\Services\StateService;
+use DefStudio\Telegraph\Facades\Telegraph;
 use DefStudio\Telegraph\Handlers\WebhookHandler;
+use DefStudio\Telegraph\Models\TelegraphChat;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Stringable;
 use App\Handlers\Actions\SupportAction;
 use App\Handlers\Actions\SearchByNameAction;
@@ -39,9 +42,6 @@ class CustomWebhookHandler extends WebhookHandler
             case 'поиск по оригинальному коду':
                 app(SearchByOriginalCodeAction::class)->execute($this->chat);
                 break;
-            case 'мои заказы':
-                app(OrderAction::class)->execute($this->chat);
-                break;
             case 'поддержка/отзывы':
                 app(SupportAction::class)->execute($this->chat);
                 break;
@@ -61,6 +61,24 @@ class CustomWebhookHandler extends WebhookHandler
         }
     }
 
+//    public function forwardPart(?int $message_id): void
+//    {
+//        $chat = $this->chat;
+//        if (!$chat->chat_id) {
+//            \Log::error("forwardPart: chat_id is null, cannot forward");
+//            return;
+//        }
+//
+//        if (!$message_id) {
+//            \Log::error("forwardPart: message_id is null, cannot forward");
+//            $chat->markdown("❌ Ошибка: ID сообщения не найден")->send();
+//            return;
+//        }
+//
+//        $adminChatId = 8422144169;
+//        $chat->forwardMessage($adminChatId, $message_id);
+//        $chat->markdown("✅ Сообщение переслано админу")->send();
+//    }
 
 
     public function start(): void

@@ -15,8 +15,6 @@ use App\Models\Part;
 
 class SearchByNameAction
 {
-    protected int $perPage = 4; // сколько деталей на страницу
-
     public function execute(TelegraphChat $chat): void
     {
         app(StateService::class)->set($chat, 'waiting_for_model');
