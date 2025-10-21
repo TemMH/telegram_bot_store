@@ -31,9 +31,10 @@ class ChoosePartAction
         }
 
         $media = [];
-        $thumbnailLink1 = driveLinkToThumbnail($part->path_to_photo1);
-        $media[] = ['type' => 'photo', 'media' => $thumbnailLink1, 'caption' => $this->buildCaption($part), 'parse_mode' => 'HTML'];
 
+        if (!empty($part->path_to_photo1)) {
+            $media[] = ['type' => 'photo', 'media' => driveLinkToThumbnail($part->path_to_photo1), 'caption' => $this->buildCaption($part), 'parse_mode' => 'HTML'];
+        }
         if (!empty($part->path_to_photo2)) {
             $media[] = ['type' => 'photo', 'media' => driveLinkToThumbnail($part->path_to_photo2)];
         }
@@ -41,15 +42,19 @@ class ChoosePartAction
             $media[] = ['type' => 'photo', 'media' => driveLinkToThumbnail($part->path_to_photo3)];
         }
 
+        if (count($media) > 0) {
         // Отправляем мультимедиа (или одно фото)
-        if (count($media) > 1) {
-            $chat->mediaGroup($media)->send();
+            if (count($media) > 1) {
+                $chat->mediaGroup($media)->send();
+            } else {
+                $chat->photo($media[0]['media'])
+                    ->html($this->buildCaption($part))
+                    ->send();
+            }
         } else {
-            $chat->photo($thumbnailLink1)
-                ->html($this->buildCaption($part))
-                ->send();
+            // Если фото нет, отправляем только текст
+            $chat->html($this->buildCaption($part))->send();
         }
-
 
 //        $chatId = $chat->chat_id;
 //        $keyboard = Keyboard::make()

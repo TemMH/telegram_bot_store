@@ -8,7 +8,7 @@ class SupportAction
 {
     public function execute(TelegraphChat $chat): void
     {
-        $text = "Свои вопросы/фидбек о боте можно оставить в [этом чате](https://t.me/OPEL_GM)";
+        $text = "Свои вопросы/фидбек о боте можно оставить в [этом чате](https://t.me/Auto_Drop_MSK)";
         $chat->markdown($text)->send();
     }
 }
