@@ -38,12 +38,16 @@ class SearchByOriginalCodeAction
 
         $response = "Найдено ".$match->count()." совпадений:\n\n";
 
+
         foreach ($match as $part) {
-            $response .= "*{$part->name}*\nПодходит для: {$part->applicability}\n Посмотреть - /part\_{$part->part_code}" . "\n\n";
+            $cleanCode = preg_replace('/[^a-zA-Zа-яА-Я0-9]/u', '', $part->part_code);
+
+            $response .= "<b>{$part->name}</b>\n";
+            $response .= "Подходит для: {$part->applicability}\n";
+            $response .= "Посмотреть — /part_{$cleanCode}\n\n";
         }
 
-        $chat->markdown($response)->send();
-
+        $chat->html($response)->send();
 
 //        app(StateService::class)->clear($chat);
 //        app(ChoosePartAction::class)->execute($chat);

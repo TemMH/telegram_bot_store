@@ -8,12 +8,21 @@ use App\Models\Part;
 use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
 use DefStudio\Telegraph\Models\TelegraphChat;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ChoosePartAction
 {
     public function execute(TelegraphChat $chat, string $partCode): void
     {
+
+        // Очистка всех записей в БД от спец символов (выполнить один раз после обновления бд)
+        Part::query()->update([
+            'part_code' => DB::raw("REGEXP_REPLACE(part_code, '[^a-zA-Zа-яА-Я0-9]', '', 'g')")
+        ]);
+
+
+
         $part = Part::query()->where('part_code', $partCode)->first();
 
         if (!$part) {
@@ -21,7 +30,7 @@ class ChoosePartAction
             return;
         }
 
-        // Вспомогательная функция для Google Drive ссылок
+        // Преобразование в обложку для Google Drive
         function driveLinkToThumbnail(string $link): string
         {
             if (preg_match('#/d/([a-zA-Z0-9_-]+)#', $link, $matches)) {

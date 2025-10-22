@@ -26,9 +26,6 @@ class SearchByNameAction
             ->send();
     }
 
-    /**
-     * Поиск и вывод результатов с пагинацией
-     */
 
     public function search(string $text, TelegraphChat $chat): void
     {
@@ -56,23 +53,27 @@ class SearchByNameAction
         $total = $matches->count();
 
 
-
         if ($matches->isEmpty()) {
             $chat->markdown("❌ Не удалось найти детали для *{$text}*")->send();
             return;
         }
 
 
-        if ($total > 12){
+        if ($total > 12) {
             $response = "Найдено много совпадений ({$total}) уточните запрос";
-        }else{
+        } else {
             $response = "Найдено {$total} совпадений:\n\n";
 
             foreach ($matches as $part) {
-                $response .= "*{$part->name}*\nПодходит для: {$part->applicability}\n Посмотреть - /part\_{$part->part_code}" . "\n\n";
+                $cleanCode = preg_replace('/[^a-zA-Zа-яА-Я0-9]/u', '', $part->part_code);
+
+                $response .= "<b>{$part->name}</b>\n";
+                $response .= "Подходит для: {$part->applicability}\n";
+                $response .= "Посмотреть — /part_{$cleanCode}\n\n";
             }
         }
-        $chat->markdown($response)->send();
+
+        $chat->html($response)->send();
     }
 
 }
